@@ -1,9 +1,9 @@
 import React from "react";
 import { io } from "socket.io-client";
 import { SliceState } from "../features/userSlice";
-const SOCKET_URL = process.env.REACT_APP_BASE_URL;
+const SOCKET_URL = process.env.REACT_APP_BASE_URL || "";
 // const SOCKET_URL = "https://chat-app-backend-bwff.onrender.com";
-export const socket = io(SOCKET_URL as string);
+export const socket = io(SOCKET_URL);
 
 export type MessageType = {
   room: string;
