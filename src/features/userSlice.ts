@@ -9,6 +9,7 @@ export type SliceState = {
   password: string,
   status: string,
   newMessages: any
+  email: string
 };
 
 const initialState: SliceState = {
@@ -17,7 +18,8 @@ const initialState: SliceState = {
   name: "",
   picture: "",
   password: "",
-  status: ""
+  status: "",
+  email: ""
 };
 
 export const userSlice = createSlice({
@@ -54,7 +56,8 @@ export const userSlice = createSlice({
       name: "",
       picture: "",
       password: "",
-      status: ""
+      status: "",
+      email: ""
     }));
   },
 });

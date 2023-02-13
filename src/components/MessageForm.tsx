@@ -5,13 +5,13 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 import { AppContext } from "../context/appContext";
-
+import { SliceState } from "../features/userSlice";
 function MessageForm() {
   const [message, setMessage] = useState("");
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state: SliceState) => state);
   const { socket, currentRoom, setMessages, messages, privateMemberMsg } =
     useContext(AppContext);
-  const messageEndRef = useRef < HTMLElement | null > (null);
+  const messageEndRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -35,7 +35,7 @@ function MessageForm() {
   }
   // Function for scrolling at last message
   function scrollToBottom() {
-    messageEndRef.current?.scrollIntoView({ behavior: "instant" });
+    messageEndRef.current?.scrollIntoView();
   }
 
   const todayDate = getFormattedDate();
@@ -48,7 +48,7 @@ function MessageForm() {
     setMessages([...messages, newMessage]);
   });
 
-  function handleSubmit(e) {
+  function handleSubmit(e: { preventDefault: () => void; }) {
     e.preventDefault();
     if (!message) return;
     const today = new Date();
@@ -101,40 +101,42 @@ function MessageForm() {
             const hideDate = idx > 0 && date === messages[idx - 1].date;
             return (
               <div key={idx}>
-                {!hideDate && (
-                  <p className="alert alert-info text-center message-date-indicator">
-                    {date}
-                  </p>
-                )}
-                {console.log("user", user.email)}
-                <div
-                  className={
-                    sender?.email === user?.email
-                      ? "message"
-                      : "incoming-message"
-                  }
-                >
-                  <div className="message-inner">
-                    <div className="d-flex align-items-center mb-3">
-                      <img
-                        src={sender.picture}
-                        style={{
-                          width: 35,
-                          height: 35,
-                          objectFit: "cover",
-                          borderRadius: "50%",
-                          marginRight: 10,
-                        }}
-                        alt="sender-pic"
-                      />
-                      <p className="message-sender">
-                        {sender.id === user?.id ? "You" : sender.name}
-                      </p>
+                <>
+                  {!hideDate && (
+                    <p className="alert alert-info text-center message-date-indicator">
+                      {date}
+                    </p>
+                  )}
+                  {console.log("user", user.email)}
+                  <div
+                    className={
+                      sender?.email === user?.email
+                        ? "message"
+                        : "incoming-message"
+                    }
+                  >
+                    <div className="message-inner">
+                      <div className="d-flex align-items-center mb-3">
+                        <img
+                          src={sender.picture}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            objectFit: "cover",
+                            borderRadius: "50%",
+                            marginRight: 10,
+                          }}
+                          alt="sender-pic"
+                        />
+                        <p className="message-sender">
+                          {sender.id === user?.id ? "You" : sender.name}
+                        </p>
+                      </div>
+                      <p className="message-content">{content}</p>
+                      <p className="message-timestamp-left">{time}</p>
                     </div>
-                    <p className="message-content">{content}</p>
-                    <p className="message-timestamp-left">{time}</p>
                   </div>
-                </div>
+                </>
               </div>
             );
           })}

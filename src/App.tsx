@@ -5,21 +5,19 @@ import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Navigation from "./components/Navigation";
-import { AppContext, socket } from "./context/appContext";
+import { AppContext, MessageType, PrivateMemberMsgType, socket } from "./context/appContext";
 import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { SliceState } from "./features/userSlice";
 
-
 function App() {
   const [rooms, setRooms] = useState<string[]>([]);
-  const [currentRoom, setCurrentRoom] = useState<string[]>([]);
+  const [currentRoom, setCurrentRoom] = useState<string>("");
   const [members, setMembers] = useState<string[]>([]);
-  const [messages, setMessages] = useState<string[]>([]);
-  const [privateMemberMsg, setPrivateMemberMsg] = useState<{}>({});
-  const [newMessages, setNewMessages] = useState<{}>({});
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [privateMemberMsg, setPrivateMemberMsg] = useState<PrivateMemberMsgType | null>(null);
   const user = useSelector((state: SliceState) => state);
   return (
     <AppContext.Provider
@@ -35,8 +33,6 @@ function App() {
         setPrivateMemberMsg,
         rooms,
         setRooms,
-        newMessages,
-        setNewMessages,
       }}
     >
       {" "}

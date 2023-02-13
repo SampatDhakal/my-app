@@ -42,7 +42,11 @@ const Sidebar: React.FC = () => {
 
     // Setting the private member message to null
     if (isPublic) {
-      setPrivateMemberMsg(null);
+      setPrivateMemberMsg({
+        id: "",
+        name: "",
+        picture: ""
+      });
     }
 
     // Dispatch for notifications
@@ -65,7 +69,7 @@ const Sidebar: React.FC = () => {
   }, []);
 
   // Handling a new user joining the chat room
-  socket.off("new-user").on("new-user", (payload: any) => {
+  socket.off("new-user").on("new-user", (payload) => {
     setMembers(payload);
   });
 
@@ -78,7 +82,7 @@ const Sidebar: React.FC = () => {
   }
 
   // Utility function to order the room ids
-  function orderIds(id1: number, id2: number) {
+  function orderIds(id1: string | number, id2: string | number) {
     if (id1 > id2) {
       return id1 + "-" + id2;
     } else {
@@ -106,7 +110,7 @@ const Sidebar: React.FC = () => {
       {/* List available tooms */}
       <ListGroup>
         {" "}
-        {rooms.map((room, idx) => (
+        {rooms.map((room: string, idx) => (
           <ListGroup.Item
             key={idx}
             onClick={() => joinRoom(room)}
@@ -129,7 +133,7 @@ const Sidebar: React.FC = () => {
         {/* List members */}
       </ListGroup>
       <h2>Members</h2>
-      {members.map((member) => (
+      {members.map((member: any) => (
         <ListGroup.Item
           key={member.id}
           style={{ cursor: "pointer" }}
